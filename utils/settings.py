@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #Slack Utils
-SLACK_BOT_TOKEN = 'xoxp-120868529441-122238138567-122228619366-bddba3426d2feb0c8ae0c49d3cd3b6f6'
+SLACK_BOT_TOKEN = 'xoxp-120868529441-122238138567-122194507248-0e7856ee666d0bef705e41d921a51b79'
 pythonlog_ch = "#pythonlog"
 
 # Redis Configuration
