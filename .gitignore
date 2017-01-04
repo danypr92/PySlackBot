@@ -1,2 +1,10 @@
-*.pcy
+# Git Ignore 
+Created - 2017/01/04
+Add /*.pyc
+Add /*/*.pyc
+Add /*.sh
+
+/*.pyc
+/*/*.pyc
+/*.sh
 
