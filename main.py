@@ -67,7 +67,7 @@ def main():
     slack_ch = slack_args.get('slack_ch')
     slack_token = slack_args.get('slack_token')
     my_slack_client = MySlackClient(slack_token, slack_ch)
-    my_redis = MyRedis(host=host, port=port, slack_client=my_slack_client)
+    my_redis = MyRedis(host=host, port=port)
     # while():
     print('Run Slacklog Bot!')
     runSpy(my_redis, my_slack_client)
