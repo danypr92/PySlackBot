@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Legacy token --> https://api.slack.com/custom-integrations/legacy-tokens
+
+python main.py -redis-h 127.0.0.1 -redis-p 6379 -slack-ch '#slackChannel' -slack-token "your legacy token"
