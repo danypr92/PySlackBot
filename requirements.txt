@@ -3,4 +3,4 @@
 # pip install -r requirements.txt
 requests==2.12.4
 redis==2.10.5
-slackclient==1.0.4
+slackclient==1.0.6
