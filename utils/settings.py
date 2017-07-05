@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 #Slack Utils
-SLACK_BOT_TOKEN = ''
 pythonlog_ch = "#pythonlog"
 
 # Redis Configuration
