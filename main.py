@@ -6,7 +6,7 @@ from multiprocessing import Pool
 
 from my_slack.my_slack_client import MySlackClient
 from my_redis.my_redis import MyRedis
-from utils.settings import *
+import utils.util_tools
 
 def run(name):
     print("Start {}!".format(name))
@@ -21,23 +21,16 @@ def runSpy(my_redis, my_slack_client):
     changes = {}
     while True:
         keys = my_redis.keys('*')
-        new_keys = [
-            {
-                'key': key,
-                'value': my_redis.get(key)
-            }
-            for key in keys if key not in old_keys
-        ]
-        removed_keys = [
-            key
-
-            for key in old_keys if key not in keys
-        ]
-        changes['new'] = new_keys
-        changes['removed'] = removed_keys
-        if new_keys:
-            my_slack_client.info_diff(changes)
+        new_keys = [{'key': key, 'value': my_redis.get(key) }
+                    for key in keys if key not in old_keys]
+        removed_keys = [key for key in old_keys if key not in keys]
         old_keys = keys
+
+        news_message = utils.util_tools.humanize_dict(new_keys)
+        removed_message = utils.util_tools.humanize_list(removed_keys)
+
+        if news_message: my_slack_client.send_message_log("_*News*_:\n\n" + news_message)
+        if removed_message: my_slack_client.send_message_log("_*Removed*_:\n\n" + removed_message)
         time.sleep(1)
 
 def parse_args():
