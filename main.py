@@ -53,6 +53,9 @@ def parse_args():
             redis_args['port']= host
         if '-slack-ch' in val:
             slack_args['slack_ch'] = args[i+1]
+        if '-slack-token' in val:
+            slack_args['slack_token'] = args[i+1]
+
     if not redis_args:
         print("Need redis args. Ex:\npython main.py -redis-h 127.0.0.1 -redis-p 6379 [...]")
         exit(0)
@@ -62,12 +65,14 @@ def parse_args():
     return redis_args, slack_args
 
 def main():
+
+
     redis_args, slack_args = parse_args()
 
     host = redis_args.get('host')
     port = redis_args.get('port')
     slack_ch = slack_args.get('slack_ch')
-    slack_token = SLACK_BOT_TOKEN
+    slack_token = slack_args.get('slack_token')
     my_slack_client = MySlackClient(slack_token, slack_ch)
     my_redis = MyRedis(host=host, port=port, slack_client=my_slack_client)
     # while():
