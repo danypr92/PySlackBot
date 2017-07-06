@@ -2,4 +2,18 @@
 
 # Legacy token --> https://api.slack.com/custom-integrations/legacy-tokens
 
+# VirtualEnvironment
+function virtualEnv {
+  cd "PySlackViEnv/.." || {
+    echo "Creating virtualenv..."
+    virtualenv PySlackViEnv
+  }
+
+  . PySlackViEnv/bin/activate
+
+  pip install -r requirements.txt >> /dev/null
+  figlet -w 200 -f slant "Welcome to PySlackViEnv Environment"
+}
+
+virtualEnv
 python main.py -redis-h 127.0.0.1 -redis-p 6379 -slack-ch '#slackChannel' -slack-token "your legacy token"
