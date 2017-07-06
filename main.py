@@ -1,8 +1,9 @@
 #!/usr/bin/python
 
-import time
+import time, os, configparser
 import sys
 from multiprocessing import Pool
+from configparser import ConfigParser
 
 from my_slack.my_slack_client import MySlackClient
 from my_redis.my_redis import MyRedis
@@ -57,27 +58,43 @@ def parse_args():
         exit(0)
     return redis_args, slack_args
 
+def get_configs():
+    slack_conf_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), 'config/slack.ini'
+        )
+    print('Get Slack configuration from ' + slack_conf_path)
+    configParser = ConfigParser()
+    configParser.read(slack_conf_path)
+    slack = {}
+    slack['token'] = configParser.get('DEFAULT', 'token')
+    try:
+        slack['chat_id'] = configParser.get('DELETE_MESSAGES', 'chat')
+        slack['user'] = configParser.get('DELETE_MESSAGES', 'user')
+    except: True
+
+    redis_conf_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), 'config/redis.ini'
+        )
+    print('Get Redis configuration from ' + redis_conf_path)
+    configParser = ConfigParser()
+    configParser.read(redis_conf_path)
+    redis = {}
+    redis['host'] = configParser.get('DEFAULT', 'host')
+    redis['port'] = configParser.get('DEFAULT', 'port')
+
+    return redis, slack
+
 def main():
 
+    redis_args, slack_args = get_configs()
 
-    redis_args, slack_args = parse_args()
-
-    host = redis_args.get('host')
-    port = redis_args.get('port')
     slack_ch = slack_args.get('slack_ch')
-    slack_token = slack_args.get('slack_token')
-    my_slack_client = MySlackClient(slack_token, slack_ch)
-    my_redis = MyRedis(host=host, port=port)
-    # while():
+    my_slack_client = MySlackClient( slack_args['token'], slack_ch)
+    my_redis = MyRedis(host=redis_args['host'], port=redis_args['port'])
     print('Run Slacklog Bot!')
-    runSpy(my_redis, my_slack_client)
-    # my_redis.setex('foo2', 'boo')
-    #
-    # my_redis.get('foo2')
-    #
-    # my_redis.delete('foo2')
-    # p = Pool(5)
-    # p.map(run,['T-A','T-B','T-C','T-D'])
+    print(my_slack_client.sc.api_call("channels.list", exclude_archived=1))
+    my_slack_client.get_channel_lists()
+    # runSpy(my_redis, my_slack_client)
 
 if __name__ == '__main__':
     main()

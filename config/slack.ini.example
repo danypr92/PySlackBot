@@ -1,0 +1,6 @@
+[DEFAULT]
+token = xxxxxxxxxxxxxxx
+
+[DELETE_MESSAGES]
+chat = xxxxxxxxxxxxxxx
+user = xxxxxxxxxxxxxx
