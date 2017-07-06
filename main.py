@@ -90,11 +90,8 @@ def main():
 
     my_slack_client = MySlackClient( slack_args['token'], slack_args['chat'] )
     my_redis = MyRedis(host=redis_args['host'], port=redis_args['port'])
-    print('Run Slacklog Bot!')
-    print(my_slack_client.sc.api_call("channels.list", exclude_archived=1))
     my_slack_client.send_message_log("_*News*_:\n\n")
-    my_slack_client.print_msg("Hola Mundo")
-    my_slack_client.get_channels_list()
+    print(my_slack_client.get_channels_list())
     # runSpy(my_redis, my_slack_client)
 
 if __name__ == '__main__':
