@@ -18,14 +18,20 @@ class MySlackClient:
           "chat.postMessage",
           channel=self.default_ch,
           text=msg
-        )
+          )
 
-    def print_message(self, message):
-        print(message)
-        return message
 
     def get_channels_list(self):
-        return self.sc.api_call('channels.list', exclude_archived=1)
+        formatted_channels = []
+        channels = self.sc.api_call('channels.list', exclude_archived=1)
+        for channel in channels['channels']:
+            new_channel = {
+                'name': channel['name'],
+                'id': channel['id'],
+                'creator': channel['creator']
+            }
+            formatted_channels.append(new_channel)
+        return formatted_channels
 
     def retrieve_channel_messages(self, chat_id=None):
         if not chat_id: chat_id=self.default_ch
