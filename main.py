@@ -68,7 +68,7 @@ def get_configs():
     slack = {}
     slack['token'] = configParser.get('DEFAULT', 'token')
     try:
-        slack['chat_id'] = configParser.get('DELETE_MESSAGES', 'chat')
+        slack['chat'] = configParser.get('DELETE_MESSAGES', 'chat')
         slack['user'] = configParser.get('DELETE_MESSAGES', 'user')
     except: True
 
@@ -88,12 +88,13 @@ def main():
 
     redis_args, slack_args = get_configs()
 
-    slack_ch = slack_args.get('slack_ch')
-    my_slack_client = MySlackClient( slack_args['token'], slack_ch)
+    my_slack_client = MySlackClient( slack_args['token'], slack_args['chat'] )
     my_redis = MyRedis(host=redis_args['host'], port=redis_args['port'])
     print('Run Slacklog Bot!')
     print(my_slack_client.sc.api_call("channels.list", exclude_archived=1))
-    my_slack_client.get_channel_lists()
+    my_slack_client.send_message_log("_*News*_:\n\n")
+    my_slack_client.print_msg("Hola Mundo")
+    my_slack_client.get_channels_list()
     # runSpy(my_redis, my_slack_client)
 
 if __name__ == '__main__':
