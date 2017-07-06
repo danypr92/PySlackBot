@@ -36,27 +36,15 @@ def runSpy(my_redis, my_slack_client):
 
 def parse_args():
     args = sys.argv
-    redis_args = {}
-    slack_args = {}
-    for i, val in enumerate(args):
-        if '-redis-h' in val:
-            host = args[i+1]
-            redis_args['host']= host
-        if '-redis-p' in val:
-            host = args[i+1]
-            redis_args['port']= host
-        if '-slack-ch' in val:
-            slack_args['slack_ch'] = args[i+1]
-        if '-slack-token' in val:
-            slack_args['slack_token'] = args[i+1]
+    for val in args:
+        if '-channel-info' == str(val):
+            return "chl_info"
+        if '-spy' is val:
+            return 'spy'
+        if '-send-msg' is val:
+            return 'send_msg'
 
-    if not redis_args:
-        print("Need redis args. Ex:\npython main.py -redis-h 127.0.0.1 -redis-p 6379 [...]")
-        exit(0)
-    if not slack_args:
-        print("Need slack args. Ex:\npython main.py [...] -slack-ch #chanelTest")
-        exit(0)
-    return redis_args, slack_args
+
 
 def get_configs():
     slack_conf_path = os.path.join(
@@ -87,6 +75,7 @@ def get_configs():
 def main():
 
     redis_args, slack_args = get_configs()
+    action = parse_args()
 
     my_slack_client = MySlackClient( slack_args['token'], slack_args['chat'] )
     my_redis = MyRedis(host=redis_args['host'], port=redis_args['port'])
