@@ -1,4 +1,4 @@
-# Git Ignore 
+# Git Ignore
 Created - 2017/01/04
 Add /*.pyc
 Add /*/*.pyc
@@ -8,3 +8,4 @@ Add /*.sh
 /*/*.pyc
 /*.sh
 /PySlackViEnv
+/config/*.ini
