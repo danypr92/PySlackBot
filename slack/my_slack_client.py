@@ -1,14 +1,15 @@
 #!/usr/bin/python
 
-import os
 from slackclient import SlackClient
 
 class MySlackClient:
 
+    token = None
     sc = None
     default_ch = None
 
-    def __init__(self, slack_token, default_ch):
+    def __init__(self, token, default_ch):
+        self.token = token
         self.sc = SlackClient(slack_token)
         self.default_ch = default_ch
 
