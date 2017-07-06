@@ -72,6 +72,11 @@ def get_configs():
 
     return redis, slack
 
+def get_info(my_slack_client):
+    channel_name = raw_input('Enter channel name:')
+    if not channel_name: channel_name = 'random'
+    print(my_slack_client.get_channel_info(channel_name))
+
 def main():
 
     redis_args, slack_args = get_configs()
@@ -79,9 +84,12 @@ def main():
 
     my_slack_client = MySlackClient( slack_args['token'], slack_args['chat'] )
     my_redis = MyRedis(host=redis_args['host'], port=redis_args['port'])
-    my_slack_client.send_message_log("_*News*_:\n\n")
-    print(my_slack_client.get_channels_list())
-    # runSpy(my_redis, my_slack_client)
+    if action == 'send_msg':
+        my_slack_client.send_message_log("_*News*_:\n\n")
+    elif action == 'chl_info':
+        get_info(my_slack_client=my_slack_client)
+    elif action == 'spy':
+        runSpy(my_slack_client=my_slack_client, my_redis=my_redis)
 
 if __name__ == '__main__':
     main()
