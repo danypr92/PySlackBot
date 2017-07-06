@@ -55,3 +55,8 @@ class MySlackClient:
             else:
                 print(r.text)
                 exit
+
+    def get_channel_info(self, channel_name):
+        channels_list = self.get_channels_list()
+        for channel in channels_list:
+            if channel['name'] == channel_name: return channel
