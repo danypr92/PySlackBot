@@ -37,8 +37,14 @@ def runSpy(my_redis, my_slack_client):
 def parse_args():
     args = sys.argv
     for val in args:
-        if '-channel-info' == str(val):
-            return "chl_info"
+        if '-channels-info' == str(val):
+            return "chls_info"
+        if '-parties-info' == str(val):
+            return "parties_info"
+        if '-del-parties-msgs' == str(val):
+            return "del_parties_msgs"
+        if '-del-priv-chat-msgs' == str(val):
+            return "del_private_chat_msgs"
         if '-spy' is val:
             return 'spy'
         if '-send-msg' is val:
@@ -88,8 +94,18 @@ def main():
         my_slack_client.send_message_log("_*News*_:\n\n")
     elif action == 'chl_info':
         get_info(my_slack_client=my_slack_client)
+    elif action == 'chls_info':
+        my_slack_client.get_channels_list()
+    elif action == 'del_parties_msgs':
+        my_slack_client.del_parties_msgs(user_id='U16DU8W5D',
+            parties_except = ['G1QS97S9E', 'G3NPX33EF', 'G3YQ6F6LQ'])
+    elif action == 'del_private_chat_msgs':
+        my_slack_client.del_private_chats_msgs(user_id='U16DU8W5D',
+            chats_except = ['D1D7UTQGG', 'D1D7UTP40'])
     elif action == 'spy':
         runSpy(my_slack_client=my_slack_client, my_redis=my_redis)
+    else:
+        print("Action not found: " + action)
 
 if __name__ == '__main__':
     main()
